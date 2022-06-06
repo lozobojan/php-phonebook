@@ -1,17 +1,19 @@
 <?php 
     session_start();
+    include "connectDB.php";
+    include "databaseFunctions.php";
+
     if(!$_SESSION['loggedIn']){
         header("location:login.php");
         exit;
     }
-    include("fileFunctions.php");
 
     $searchTerm = "";
     if(isset($_GET['searchTerm']) && $_GET['searchTerm'] != ""){
         $searchTerm = $_GET['searchTerm'];
-        $contacts = filterContacts($_GET['searchTerm']);
+        $contacts = getContactsFromDatabase($_GET['searchTerm']);
     }else{
-        $contacts = getContactsFromFile();
+        $contacts = getContactsFromDatabase();
     }
     
 

@@ -1,6 +1,7 @@
 <?php 
 
-    include("fileFunctions.php");
+    include "connectDB.php";
+    include "databaseFunctions.php";
 
     if(isset($_GET['id'])){
         $id = $_GET['id'];
@@ -8,13 +9,8 @@
         header("location:index.php");
     }
 
-    $contacts = getContactsFromFile();
-    $contactsFiltered = array_filter($contacts, function($c) use($id){
-        return $c['id'] != $id;
-    });
-
-    saveContactsToFile($contactsFiltered);
+    deleteContact($id);
+    
     header("location:index.php");
-    exit;
 
 ?>

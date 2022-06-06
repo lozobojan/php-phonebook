@@ -1,6 +1,6 @@
 <?php 
-
-    include("fileFunctions.php");
+    include "connectDB.php";
+    include "databaseFunctions.php";
 
     if(isset($_GET['id'])){
         $contact = findContactById($_GET['id']);
