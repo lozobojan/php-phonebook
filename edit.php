@@ -31,6 +31,39 @@
                     <input type="text" required class="mt-3 form-control" name="first_name" placeholder="Unesite ime..." value="<?=$contact['first_name']?>">
                     <input type="text" required class="mt-3 form-control" name="last_name" placeholder="Unesite prezime..." value="<?=$contact['last_name']?>">
                     <input type="email" required class="mt-3 form-control" name="email" placeholder="Unesite email..." value="<?=$contact['email']?>">
+                    
+                    <select name="country_id" id="country_id" class="form-control mt-3" onchange="displayCities()">
+                        <option value="" selected disabled>- odaberite državu -</option>
+                        <?php 
+                            $countries = getCountries();
+                            while($country = mysqli_fetch_assoc($countries)){
+                                $countryId = $country['id'];
+                                $countryName = $country['name'];
+                                $selected = "";
+                                if($countryId == $contact['country_id']){
+                                    $selected = "selected";
+                                }
+                                echo "<option value=\"$countryId\" $selected >$countryName</option>";
+                            }
+                        ?>
+                    </select>
+
+                    <select name="city_id" id="city_id" class="form-control mt-3">
+                        <?php 
+                        
+                            $cities = getCitiesByCountry($contact['country_id']);
+                            while($city = mysqli_fetch_assoc($cities)){
+                                $cityId = $city['id'];
+                                $cityName = $city['name'];
+                                $selected = "";
+                                if($cityId == $contact['city_id']){
+                                    $selected = "selected";
+                                }
+                                echo "<option value=\"$cityId\" $selected >$cityName</option>";
+                            }
+                        
+                        ?>
+                    </select>
 
                     <button class="btn float-end mt-3 btn-primary">Izmijeni kontakt</button>
                 </form>

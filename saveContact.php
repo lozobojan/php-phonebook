@@ -8,12 +8,11 @@
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $email = $_POST['email'];
+    $city_id = $_POST['city_id'];
 
-    //$user_id = $_SESSION['user']['id'];
-    // TODO: refactor to real user id from DB
-    $user_id = 1;
+    $user_id = $_SESSION['user']['id'];
 
-    saveContactToDatabase($first_name, $last_name, $email, $user_id);
+    saveContactToDatabase($first_name, $last_name, $email, $user_id, $city_id);
     
     header("location:./index.php");
 ?>
