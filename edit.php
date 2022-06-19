@@ -23,10 +23,29 @@
     
     <div class="container">
 
+    <form action="updateContact.php" method="POST" enctype="multipart/form-data">
         <div class="row mt-5">
-            <div class="col-8 offset-2">
+        
+            <div class="col-4">
+                <?php 
+                    $profile_photo = $contact['profile_photo'];
+                    if(!$profile_photo) $profile_photo = "uploads/profile_photos/placeholder.jpg";
+                ?>
+                <div class="row">
+                    <div class="col-12">
+                        <img src="<?=$profile_photo?>" alt="Profile photo" class="img-fluid img-thumbnail">
+                        <input type="hidden" name="old_profile_photo" value="<?=$profile_photo?>">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="file" name="profile_photo" class="form-control mt-3">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 offset-1">
                 <h3>Izmjena detalja kontakta</h3>
-                <form action="updateContact.php" method="POST">
                     <input type="hidden" name="id" value="<?=$contact['id']?>">
                     <input type="text" required class="mt-3 form-control" name="first_name" placeholder="Unesite ime..." value="<?=$contact['first_name']?>">
                     <input type="text" required class="mt-3 form-control" name="last_name" placeholder="Unesite prezime..." value="<?=$contact['last_name']?>">
@@ -66,9 +85,9 @@
                     </select>
 
                     <button class="btn float-end mt-3 btn-primary">Izmijeni kontakt</button>
-                </form>
             </div>
         </div>
+    </form>
 
     </div>
 

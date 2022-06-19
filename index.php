@@ -25,6 +25,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
     <title>Phonebook</title>
 </head>
 <body>
@@ -42,6 +43,7 @@
 
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Ime</th>
                             <th>Prezime</th>
                             <th>Email</th>
@@ -62,9 +64,17 @@
                             $city_name = $contact['city_name'];
                             $country_name = $contact['country_name'];
                             $id = $contact['id'];
+                            $profile_photo = $contact['profile_photo'];
+
+                            if(!$profile_photo) $profile_photo = "uploads/profile_photos/placeholder.jpg";
+
+                            $image = "<a target=\"_blank\" href=\"$profile_photo\" >
+                                            <img src=\"$profile_photo\" class=\"table-profile-img\" >
+                                        </a>";
 
                             echo "
                                 <tr>
+                                    <td>$image</td>
                                     <td>$first_name</td>
                                     <td>$last_name</td>
                                     <td>$email</td>
@@ -84,7 +94,7 @@
             </div>
             <div class="col-4   ">
                 <h3>Dodavanje novog kontakta</h3>
-                <form action="saveContact.php" method="POST">
+                <form action="saveContact.php" method="POST" enctype="multipart/form-data">
                     <input type="text" required class="mt-3 form-control" name="first_name" placeholder="Unesite ime...">
                     <input type="text" required class="mt-3 form-control" name="last_name" placeholder="Unesite prezime...">
                     <input type="email" required class="mt-3 form-control" name="email" placeholder="Unesite email...">
@@ -103,6 +113,8 @@
 
                     <select name="city_id" id="city_id" class="form-control mt-3">
                     </select>
+
+                    <input type="file" name="profile_photo" class="form-control mt-3">
 
                     <button class="btn float-end mt-3 btn-primary">Dodaj kontakt</button>
                 </form>

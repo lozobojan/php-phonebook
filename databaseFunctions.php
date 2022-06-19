@@ -10,12 +10,13 @@
                     contacts.first_name,
                     contacts.last_name,
                     contacts.email,
+                    contacts.profile_photo,
                     cities.name as city_name,
                     countries.name as country_name
-                    FROM `contacts`,cities,countries 
-                    where contacts.city_id = cities.id 
-                    and cities.country_id = countries.id 
-                    and user_id = $user_id";
+                    FROM `contacts` 
+                    LEFT JOIN cities ON contacts.city_id = cities.id
+                    LEFT JOIN countries ON countries.id = cities.country_id
+                    AND user_id = $user_id";
 
         if($searchTerm != ""){
             $term = strtolower($searchTerm);
@@ -32,10 +33,10 @@
         return $contacts;
     }
 
-    function saveContactToDatabase($first_name, $last_name, $email, $user_id, $city_id){
+    function saveContactToDatabase($first_name, $last_name, $email, $user_id, $city_id, $profile_photo){
         global $db_connection;
-        $sql = "INSERT INTO contacts (first_name, last_name, email, user_id, city_id) 
-                VALUES ('$first_name', '$last_name', '$email', $user_id, $city_id)
+        $sql = "INSERT INTO contacts (first_name, last_name, email, user_id, city_id, profile_photo) 
+                VALUES ('$first_name', '$last_name', '$email', $user_id, $city_id, '$profile_photo')
                 ";
         return mysqli_query($db_connection, $sql);
     }
@@ -53,19 +54,23 @@
         return mysqli_fetch_assoc($res);
     }
 
-    function updateContact($first_name, $last_name, $email, $id, $city_id){
+    function updateContact($first_name, $last_name, $email, $id, $city_id, $profile_photo){
         global $db_connection;
         $sql = "UPDATE contacts SET 
                 first_name = '$first_name', 
                 last_name = '$last_name', 
                 email = '$email',  
-                city_id = $city_id
+                city_id = $city_id,
+                profile_photo = '$profile_photo'
             WHERE id = $id ";
         return mysqli_query($db_connection, $sql);
     }
 
     function deleteContact($id){
         global $db_connection;
+
+        deletePhotoForUser($id);
+
         $sql = "DELETE FROM contacts WHERE id = $id";
         return mysqli_query($db_connection, $sql);
     }
